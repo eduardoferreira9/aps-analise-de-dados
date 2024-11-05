@@ -4,8 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Passo 1: Carregar os arquivos CSV
-df1 = pd.read_csv('./database/Tabela 1 - Base de Incidência.csv', sep=';', encoding='utf8')
-df2 = pd.read_csv('./database/Tabela 2 - Tributo e Competência.csv', sep=';', encoding='utf8')
+df1 = pd.read_csv('Tabela 1 - Base de Incidência.csv', sep=';', encoding='utf8')
+df2 = pd.read_csv('Tabela 2 - Tributo e Competência.csv', sep=';', encoding='utf8')
 
 # Verificar as primeiras linhas de cada DataFrame
 print("Primeiras linhas da Tabela 1 (Base de Incidência):")
@@ -43,13 +43,13 @@ plt.grid(True)
 plt.show()
 
 # Passo 4: Evolução da Carga Tributária ao Longo do Tempo
-# Converter a coluna de "Ano-calendário" para formato de data
-df1['Ano-calendário'] = pd.to_datetime(df1['Ano-calendário'], format='%Y')  # Ajustando para o formato correto de ano
-carga_por_ano = df1.groupby('Ano-calendário')['Valor da Receita Tributária'].sum()
+# Converter a coluna de "Ano-calendário" para formato de data e somar por ano
+df1['Ano-calendário'] = pd.to_datetime(df1['Ano-calendário'], format='%Y')
+carga_por_ano = df1.groupby(df1['Ano-calendário'].dt.year)['Valor da Receita Tributária'].sum()
 
-# Visualização: Gráfico de linha da evolução da carga tributária ao longo do tempo
+# Visualização: Gráfico de barras para a carga tributária por ano
 plt.figure(figsize=(10, 6))
-plt.plot(carga_por_ano.index, carga_por_ano.values, marker='o', color='green')
+carga_por_ano.plot(kind='bar', color='green')
 plt.title('Evolução da Carga Tributária ao Longo do Tempo')
 plt.xlabel('Ano')
 plt.ylabel('Carga Tributária (em milhões)')
@@ -74,11 +74,13 @@ plt.show()
 # Calcular a proporção de cada "Descrição" (tipo de tributo) em relação ao total
 proporcao_tributos = df2.groupby('Descrição')['Valor da Receita Tributária'].sum() / df2['Valor da Receita Tributária'].sum()
 
-# Visualização: Gráfico de pizza para a proporção de cada tributo
-plt.figure(figsize=(8, 8))
-proporcao_tributos.plot(kind='pie', autopct='%1.1f%%', startangle=90, colors=['#ff9999','#66b3ff','#99ff99','#ffcc99'])
+# Visualização: Gráfico de barras para a proporção de cada tributo
+plt.figure(figsize=(10, 6))
+proporcao_tributos.plot(kind='bar', color='orange')
 plt.title('Proporção de Tipos de Tributos na Carga Total')
-plt.ylabel('')  # Remover o rótulo do eixo y
+plt.xlabel('Tipo de Tributo')
+plt.ylabel('Proporção da Receita Tributária')
+plt.xticks(rotation=45)
+plt.grid(True)
 plt.show()
 
-# Fim do script
