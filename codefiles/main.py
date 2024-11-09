@@ -8,7 +8,7 @@ df1 = pd.read_csv('./database/Tabela 1 - Base de Incidência.csv', sep=';', enco
 df2 = pd.read_csv('./database/Tabela 2 - Tributo e Competência.csv', sep=';', encoding='utf8')
 
 # Verificar as primeiras linhas de cada DataFrame
-print("Primeiras linhas da Tabela 1 (Base de Incidência):")
+print("\nPrimeiras linhas da Tabela 1 (Base de Incidência):")
 print(df1.head())
 print("\nPrimeiras linhas da Tabela 2 (Tributo e Competência):")
 print(df2.head())
@@ -28,7 +28,7 @@ print(df1[['Ano-calendário', 'Valor da Receita Tributária']].head())
 print("Primeiras linhas após conversão da Tabela 2:")
 print(df2[['Ano-calendário', 'Valor da Receita Tributária']].head())
 
-# Passo 3: Análise da Carga Tributária por Tipo de Imposto
+# Passo 3: Análise da Carga Tributária por Tipo de Imposto                                              #Arrumar os elementos porque eles estão muito juntos
 # Agrupar os dados da Tabela 2 por "Descrição" e somar os valores da coluna "Valor da Receita Tributária"
 tributos_por_tipo = df2.groupby('Descrição')['Valor da Receita Tributária'].sum()
 
@@ -42,7 +42,7 @@ plt.xticks(rotation=45)
 plt.grid(True)
 plt.show()
 
-# Passo 4: Evolução da Carga Tributária ao Longo do Tempo
+# Passo 4: Evolução da Carga Tributária ao Longo do Tempo                                              #Não aparece as informações dentro do gráfico
 # Converter a coluna de "Ano-calendário" para formato de data
 df1['Ano-calendário'] = pd.to_datetime(df1['Ano-calendário'], format='%Y')  # Ajustando para o formato correto de ano
 carga_por_ano = df1.groupby('Ano-calendário')['Valor da Receita Tributária'].sum()
@@ -56,7 +56,7 @@ plt.ylabel('Carga Tributária (em milhões)')
 plt.grid(True)
 plt.show()
 
-# Passo 5: Comparação da Carga Tributária entre Setores ou Orçamentos
+# Passo 5: Comparação da Carga Tributária entre Setores ou Orçamentos                                              #Funcionando perfeitamente
 # Agrupar por "Orçamento" (ajustar para o que for relevante)
 carga_por_orcamento = df2.groupby('Orçamento')['Valor da Receita Tributária'].sum()
 
@@ -70,7 +70,7 @@ plt.xticks(rotation=45)
 plt.grid(True)
 plt.show()
 
-# Passo 6: Análise da Proporção de Tipos de Tributos na Carga Total
+# Passo 6: Análise da Proporção de Tipos de Tributos na Carga Total                                              #Funcionando perfeitamente
 # Calcular a proporção de cada "Descrição" (tipo de tributo) em relação ao total
 proporcao_tributos = df2.groupby('Descrição')['Valor da Receita Tributária'].sum() / df2['Valor da Receita Tributária'].sum()
 
