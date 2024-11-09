@@ -28,7 +28,7 @@ print(df1[['Ano-calendário', 'Valor da Receita Tributária']].head())
 print("Primeiras linhas após conversão da Tabela 2:")
 print(df2[['Ano-calendário', 'Valor da Receita Tributária']].head())
 
-# Passo 3: Análise da Carga Tributária por Tipo de Imposto                                              #Arrumar os elementos porque eles estão muito juntos
+# Passo 3: Análise da Carga Tributária por Tipo de Imposto                                              #Ajustado os elementos para serem exibidos em 90 graus, funcionando perfeitamente 
 # Agrupar os dados da Tabela 2 por "Descrição" e somar os valores da coluna "Valor da Receita Tributária"
 tributos_por_tipo = df2.groupby('Descrição')['Valor da Receita Tributária'].sum()
 
@@ -38,11 +38,11 @@ tributos_por_tipo.plot(kind='bar', color='blue')
 plt.title('Carga Tributária por Tipo de Tributo')
 plt.xlabel('Tipo de Tributo')
 plt.ylabel('Valor da Receita Tributária (em milhões)')
-plt.xticks(rotation=45)
+plt.xticks(rotation=90)
 plt.grid(True)
 plt.show()
 
-# Passo 4: Evolução da Carga Tributária ao Longo do Tempo                                              #Não aparece as informações dentro do gráfico
+# Passo 4: Evolução da Carga Tributária ao Longo do Tempo                                              #Não aparece as informações dentro do gráfico, precisamos arrumar 
 # Converter a coluna de "Ano-calendário" para formato de data
 df1['Ano-calendário'] = pd.to_datetime(df1['Ano-calendário'], format='%Y')  # Ajustando para o formato correto de ano
 carga_por_ano = df1.groupby('Ano-calendário')['Valor da Receita Tributária'].sum()
@@ -70,7 +70,7 @@ plt.xticks(rotation=45)
 plt.grid(True)
 plt.show()
 
-# Passo 6: Análise da Proporção de Tipos de Tributos na Carga Total                                              #Funcionando perfeitamente
+# Passo 6: Análise da Proporção de Tipos de Tributos na Carga Total                                              #Funcionando perfeitamente, porém alguns elementos estão encima do outro
 # Calcular a proporção de cada "Descrição" (tipo de tributo) em relação ao total
 proporcao_tributos = df2.groupby('Descrição')['Valor da Receita Tributária'].sum() / df2['Valor da Receita Tributária'].sum()
 
