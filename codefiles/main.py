@@ -74,11 +74,18 @@ plt.show()
 # Calcular a proporção de cada "Descrição" (tipo de tributo) em relação ao total
 proporcao_tributos = df2.groupby('Descrição')['Valor da Receita Tributária'].sum() / df2['Valor da Receita Tributária'].sum()
 
-# Visualização: Gráfico de pizza para a proporção de cada tributo
-plt.figure(figsize=(8, 8))
-proporcao_tributos.plot(kind='pie', autopct='%1.1f%%', startangle=90, colors=['#ff9999','#66b3ff','#99ff99','#ffcc99'])
-plt.title('Proporção de Tipos de Tributos na Carga Total')
-plt.ylabel('')  # Remover o rótulo do eixo y
-plt.show()
+# Calcular os percentuais para usar na legenda
+percentuais = (proporcao_tributos * 100).round(1).astype(str) + '%'
 
-# Fim do script
+# Visualização: Gráfico de pizza para a proporção de cada tributo
+fig, ax = plt.subplots(figsize=(5, 5))  # Diminuir o tamanho da figura
+proporcao_tributos.plot(kind='pie', autopct=None, startangle=90, colors=['#ff9999', '#66b3ff', '#99ff99', '#ffcc99', '#c2c2f0', '#ffb3e6', '#c4e17f', '#ffad00', '#99ccff'], labels=[None]*len(proporcao_tributos), legend=False, fontsize=10)
+plt.title('Proporção de Tipos de Tributos na Carga Total', fontsize=12)
+plt.ylabel('')  
+
+# Legenda do lado direto
+plt.legend(
+    labels=[f"{desc}: {perc}" for desc, perc in zip(proporcao_tributos.index, percentuais)], loc="center left", bbox_to_anchor=(1.25, 0.5), title="Tipos de Tributos", fontsize=8, title_fontsize=10)
+plt.subplots_adjust(left=0.1, right=0.85)  
+plt.show()
+#Fim
