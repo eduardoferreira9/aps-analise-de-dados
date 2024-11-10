@@ -13,9 +13,9 @@ print(df1.head())
 print("\nPrimeiras linhas da Tabela 2 (Tributo e Competência):")
 print(df2.head())
 
-# Limpeza dos dados (remover valores nulos)
-df1.dropna(inplace=True)
-df2.dropna(inplace=True)
+# Limpeza dos dados (remover valores nulos)  
+#df1.dropna(inplace=True)           #Estava Causando bug para na hora de chamar os valor da tabela 1 e 2
+#df2.dropna(inplace=True)
 
 # Passo 2: Conversão da coluna "Valor da Receita Tributária" para número
 # Remover todos os caracteres que não são dígitos ou ponto e converter para float
@@ -42,18 +42,26 @@ plt.xticks(rotation=90)
 plt.grid(True)
 plt.show()
 
-# Passo 4: Evolução da Carga Tributária ao Longo do Tempo                                              #Não aparece as informações dentro do gráfico, precisamos arrumar 
-# Converter a coluna de "Ano-calendário" para formato de data
-df1['Ano-calendário'] = pd.to_datetime(df1['Ano-calendário'], format='%Y')  # Ajustando para o formato correto de ano
-carga_por_ano = df1.groupby('Ano-calendário')['Valor da Receita Tributária'].sum()
+# Passo 4: Evolução da Carga Tributária ao Longo do Tempo                                              #Ajuste realizado, funcionando perfeitamente                              
+# Converter a coluna "Ano-calendário" para inteiro (caso necessário)
+df1['Ano-calendário'] = pd.to_datetime(df1['Ano-calendário'], format='%Y').dt.year
+
+# Agrupar os dados por "Ano-calendário" e somar os valores
+carga_por_ano = df1.groupby('Ano-calendário')['Valor da Receita Tributária'].sum().sort_index()
+print(carga_por_ano)
 
 # Visualização: Gráfico de linha da evolução da carga tributária ao longo do tempo
 plt.figure(figsize=(10, 6))
-plt.plot(carga_por_ano.index, carga_por_ano.values, marker='o', color='green')
+plt.plot(carga_por_ano.index.astype(str), carga_por_ano.values, marker='o', linestyle='-', color='green')
 plt.title('Evolução da Carga Tributária ao Longo do Tempo')
 plt.xlabel('Ano')
 plt.ylabel('Carga Tributária (em milhões)')
 plt.grid(True)
+
+# Adicionando rótulos de valores aos pontos
+for x, y in zip(carga_por_ano.index, carga_por_ano.values):
+    plt.text(str(x), y, f'{y:,.2f}', ha='center', va='bottom')
+
 plt.show()
 
 # Passo 5: Comparação da Carga Tributária entre Setores ou Orçamentos                                              #Funcionando perfeitamente
