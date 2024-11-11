@@ -1,4 +1,4 @@
-# pip install -r requirements.txt <- Comando para instalacao das dependencias
+# pip install -r requirements.txt <- Comando para instalação das dependencias
 # Importar bibliotecas necessárias
 import pandas as pd
 import numpy as np
