@@ -15,7 +15,7 @@ print("\nPrimeiras linhas da Tabela 2 (Tributo e Competência):")
 print(df2.head())
 
 # Limpeza dos dados (remover valores nulos)
-#df1.dropna(inplace=True)           #Estava Causando bug para na hora de chamar os valor da tabela 1 e 2
+#df1.dropna(inplace=True)                                                   #Estava Causando bug para na hora de chamar os valor da tabela 1 e 2
 #df2.dropna(inplace=True)
 
 # Passo 2: Conversão da coluna "Valor da Receita Tributária" para número
@@ -61,7 +61,6 @@ plt.grid(True)
 # Adicionando rótulos de valores aos pontos
 for x, y in zip(carga_por_ano.index, carga_por_ano.values):
     plt.text(str(x), y, f'{y:,.2f}', ha='center', va='bottom')
-
 plt.show()
 
 # Passo 5: Comparação da Carga Tributária entre Setores ou Orçamentos
