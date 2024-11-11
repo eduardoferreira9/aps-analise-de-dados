@@ -1,3 +1,4 @@
+# pip install -r requirements.txt <- Comando para instalacao das dependencias
 # Importar bibliotecas necessárias
 import pandas as pd
 import numpy as np
@@ -13,7 +14,7 @@ print(df1.head())
 print("\nPrimeiras linhas da Tabela 2 (Tributo e Competência):")
 print(df2.head())
 
-# Limpeza dos dados (remover valores nulos)  
+# Limpeza dos dados (remover valores nulos)
 #df1.dropna(inplace=True)           #Estava Causando bug para na hora de chamar os valor da tabela 1 e 2
 #df2.dropna(inplace=True)
 
@@ -28,7 +29,7 @@ print(df1[['Ano-calendário', 'Valor da Receita Tributária']].head())
 print("Primeiras linhas após conversão da Tabela 2:")
 print(df2[['Ano-calendário', 'Valor da Receita Tributária']].head())
 
-# Passo 3: Análise da Carga Tributária por Tipo de Imposto                                              #Ajustado os elementos para serem exibidos em 90 graus, funcionando perfeitamente 
+# Passo 3: Análise da Carga Tributária por Tipo de Imposto
 # Agrupar os dados da Tabela 2 por "Descrição" e somar os valores da coluna "Valor da Receita Tributária"
 tributos_por_tipo = df2.groupby('Descrição')['Valor da Receita Tributária'].sum()
 
@@ -42,13 +43,12 @@ plt.xticks(rotation=90)
 plt.grid(True)
 plt.show()
 
-# Passo 4: Evolução da Carga Tributária ao Longo do Tempo                                              #Ajuste realizado, funcionando perfeitamente                              
+# Passo 4: Evolução da Carga Tributária ao Longo do Tempo
 # Converter a coluna "Ano-calendário" para inteiro (caso necessário)
 df1['Ano-calendário'] = pd.to_datetime(df1['Ano-calendário'], format='%Y').dt.year
 
 # Agrupar os dados por "Ano-calendário" e somar os valores
 carga_por_ano = df1.groupby('Ano-calendário')['Valor da Receita Tributária'].sum().sort_index()
-print(carga_por_ano)
 
 # Visualização: Gráfico de linha da evolução da carga tributária ao longo do tempo
 plt.figure(figsize=(10, 6))
@@ -64,7 +64,7 @@ for x, y in zip(carga_por_ano.index, carga_por_ano.values):
 
 plt.show()
 
-# Passo 5: Comparação da Carga Tributária entre Setores ou Orçamentos                                              #Funcionando perfeitamente
+# Passo 5: Comparação da Carga Tributária entre Setores ou Orçamentos
 # Agrupar por "Orçamento" (ajustar para o que for relevante)
 carga_por_orcamento = df2.groupby('Orçamento')['Valor da Receita Tributária'].sum()
 
@@ -78,7 +78,7 @@ plt.xticks(rotation=45)
 plt.grid(True)
 plt.show()
 
-# Passo 6: Análise da Proporção de Tipos de Tributos na Carga Total                                              #Funcionando perfeitamente, porém alguns elementos estão encima do outro
+# Passo 6: Análise da Proporção de Tipos de Tributos na Carga Total
 # Calcular a proporção de cada "Descrição" (tipo de tributo) em relação ao total
 proporcao_tributos = df2.groupby('Descrição')['Valor da Receita Tributária'].sum() / df2['Valor da Receita Tributária'].sum()
 
@@ -89,11 +89,10 @@ percentuais = (proporcao_tributos * 100).round(1).astype(str) + '%'
 fig, ax = plt.subplots(figsize=(5, 5))  # Diminuir o tamanho da figura
 proporcao_tributos.plot(kind='pie', autopct=None, startangle=90, colors=['#ff9999', '#66b3ff', '#99ff99', '#ffcc99', '#c2c2f0', '#ffb3e6', '#c4e17f', '#ffad00', '#99ccff'], labels=[None]*len(proporcao_tributos), legend=False, fontsize=10)
 plt.title('Proporção de Tipos de Tributos na Carga Total', fontsize=12)
-plt.ylabel('')  
+plt.ylabel('')
 
 # Legenda do lado direto
 plt.legend(
     labels=[f"{desc}: {perc}" for desc, perc in zip(proporcao_tributos.index, percentuais)], loc="center left", bbox_to_anchor=(1.25, 0.5), title="Tipos de Tributos", fontsize=8, title_fontsize=10)
-plt.subplots_adjust(left=0.1, right=0.85)  
+plt.subplots_adjust(left=0.1, right=0.85)
 plt.show()
-#Fim
